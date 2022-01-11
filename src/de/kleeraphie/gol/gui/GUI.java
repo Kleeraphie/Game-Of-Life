@@ -45,21 +45,21 @@ public class GUI extends JFrame {
 	public void start() {
 		running = true;
 //		#1
-//		btns[5][5].setBackground(Color.WHITE);
-//		btns[5][6].setBackground(Color.WHITE);
-//		btns[5][7].setBackground(Color.WHITE);
-//		btns[6][5].setBackground(Color.WHITE);
-//		btns[7][5].setBackground(Color.WHITE);
-//		btns[6][7].setBackground(Color.WHITE);
-//		btns[7][7].setBackground(Color.WHITE);
-//		
-//		btns[11][5].setBackground(Color.WHITE);
-//		btns[11][6].setBackground(Color.WHITE);
-//		btns[11][7].setBackground(Color.WHITE);
-//		btns[10][5].setBackground(Color.WHITE);
-//		btns[9][5].setBackground(Color.WHITE);
-//		btns[10][7].setBackground(Color.WHITE);
-//		btns[9][7].setBackground(Color.WHITE);
+		btns[5][5].setBackground(Color.WHITE);
+		btns[5][6].setBackground(Color.WHITE);
+		btns[5][7].setBackground(Color.WHITE);
+		btns[6][5].setBackground(Color.WHITE);
+		btns[7][5].setBackground(Color.WHITE);
+		btns[6][7].setBackground(Color.WHITE);
+		btns[7][7].setBackground(Color.WHITE);
+		
+		btns[11][5].setBackground(Color.WHITE);
+		btns[11][6].setBackground(Color.WHITE);
+		btns[11][7].setBackground(Color.WHITE);
+		btns[10][5].setBackground(Color.WHITE);
+		btns[9][5].setBackground(Color.WHITE);
+		btns[10][7].setBackground(Color.WHITE);
+		btns[9][7].setBackground(Color.WHITE);
 		
 //		#2
 //		btns[5][5].setBackground(Color.WHITE);
@@ -122,149 +122,49 @@ public class GUI extends JFrame {
 			for (int i = 0; i < size; i++)
 				for (int j = 0; j < size; j++)
 					newBtns[i][j] = btns[i][j];
+			
+//			for (int i = 0; i < size; i++) {
+//				for (int j = 0; j < size; j++) {
+//					JButton btn = new JButton();
+//					btn.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
+//					
+//					newBtns[i][j] = btn;
+//				}
+//			}
 
 			for (int i = 0; i < size; i++) {
 				for (int j = 0; j < size; j++) {
 					livingNeighbours = 0;
-
-					if (i == 0 && j == 0) {
-
-						if (btns[i + 1][j].getBackground() == Color.WHITE)
-							livingNeighbours++;
-						if (btns[i][j + 1].getBackground() == Color.WHITE)
-							livingNeighbours++;
-						if (btns[i + 1][j + 1].getBackground() == Color.WHITE)
-							livingNeighbours++;
-
-					} else if (i == 0) {
-						
-						if (j < size - 1) {
-
-						if (btns[i][j - 1].getBackground() == Color.WHITE)
-							livingNeighbours++;
-						if (btns[i + 1][j - 1].getBackground() == Color.WHITE)
-							livingNeighbours++;
-						if (btns[i + 1][j].getBackground() == Color.WHITE)
-							livingNeighbours++;
-						if (btns[i][j + 1].getBackground() == Color.WHITE)
-							livingNeighbours++;
-						if (btns[i + 1][j + 1].getBackground() == Color.WHITE)
-							livingNeighbours++;
-						
-						} else {
+					
+					for (int x = i - 1; x <= i + 1; x++) {
+						for (int y = j - 1; y <= j + 1; y++) {
 							
-							if (btns[i][j - 1].getBackground() == Color.WHITE)
+							try {
+							if (btns[x][y].getBackground() == Color.WHITE)
 								livingNeighbours++;
-							if (btns[i + 1][j - 1].getBackground() == Color.WHITE)
-								livingNeighbours++;
-							if (btns[i + 1][j].getBackground() == Color.WHITE)
-								livingNeighbours++;
+							} catch (IndexOutOfBoundsException e) {
+								continue;
+							}
 							
 						}
-
-					} else if (j == 0) {
-						
-						if (i < size - 1) {
-
-						if (btns[i - 1][j].getBackground() == Color.WHITE)
-							livingNeighbours++;
-						if (btns[i + 1][j].getBackground() == Color.WHITE)
-							livingNeighbours++;
-						if (btns[i - 1][j + 1].getBackground() == Color.WHITE)
-							livingNeighbours++;
-						if (btns[i][j + 1].getBackground() == Color.WHITE)
-							livingNeighbours++;
-						if (btns[i + 1][j + 1].getBackground() == Color.WHITE)
-							livingNeighbours++;
-						
-						} else {
-							
-							if (btns[i - 1][j].getBackground() == Color.WHITE)
-								livingNeighbours++;
-							if (btns[i - 1][j + 1].getBackground() == Color.WHITE)
-								livingNeighbours++;
-							if (btns[i][j + 1].getBackground() == Color.WHITE)
-								livingNeighbours++;
-							
-						}
-
-					} else {
-						
-						if (i < size - 1 && j < size - 1) {
-
-						if (btns[i - 1][j - 1].getBackground() == Color.WHITE)
-							livingNeighbours++;
-						if (btns[i][j - 1].getBackground() == Color.WHITE)
-							livingNeighbours++;
-						if (btns[i + 1][j - 1].getBackground() == Color.WHITE)
-							livingNeighbours++;
-						if (btns[i - 1][j].getBackground() == Color.WHITE)
-							livingNeighbours++;
-						if (btns[i + 1][j].getBackground() == Color.WHITE)
-							livingNeighbours++;
-						if (btns[i - 1][j + 1].getBackground() == Color.WHITE)
-							livingNeighbours++;
-						if (btns[i][j + 1].getBackground() == Color.WHITE)
-							livingNeighbours++;
-						if (btns[i + 1][j + 1].getBackground() == Color.WHITE)
-							livingNeighbours++;
-						
-						} else if (i == size - 1 && j == size - 1) {
-							
-							if (btns[i - 1][j - 1].getBackground() == Color.WHITE)
-								livingNeighbours++;
-							if (btns[i][j - 1].getBackground() == Color.WHITE)
-								livingNeighbours++;
-							if (btns[i - 1][j].getBackground() == Color.WHITE)
-								livingNeighbours++;
-							
-						} else if (i == size - 1) {
-							
-							if (btns[i - 1][j - 1].getBackground() == Color.WHITE)
-								livingNeighbours++;
-							if (btns[i][j - 1].getBackground() == Color.WHITE)
-								livingNeighbours++;
-							if (btns[i - 1][j].getBackground() == Color.WHITE)
-								livingNeighbours++;
-							if (btns[i - 1][j + 1].getBackground() == Color.WHITE)
-								livingNeighbours++;
-							if (btns[i][j + 1].getBackground() == Color.WHITE)
-								livingNeighbours++;
-							
-						} else if (j == size - 1) {
-							
-							if (btns[i - 1][j - 1].getBackground() == Color.WHITE)
-								livingNeighbours++;
-							if (btns[i][j - 1].getBackground() == Color.WHITE)
-								livingNeighbours++;
-							if (btns[i + 1][j - 1].getBackground() == Color.WHITE)
-								livingNeighbours++;
-							if (btns[i - 1][j].getBackground() == Color.WHITE)
-								livingNeighbours++;
-							if (btns[i + 1][j].getBackground() == Color.WHITE)
-								livingNeighbours++;
-							
-						}
-
 					}
-
-					if (btns[i][j].getBackground() == Color.WHITE) {
-
-						if (livingNeighbours < 2)
-							newBtns[i][j].setBackground(Color.BLACK);
-
-						if (livingNeighbours > 3)
-							newBtns[i][j].setBackground(Color.BLACK);
+					
+					livingNeighbours--; // because the cell itself was counted too
+					
+					if (livingNeighbours == 3)
+						newBtns[i][j].setBackground(Color.WHITE);
+					
+					if (livingNeighbours < 2)
+						newBtns[i][j].setBackground(Color.BLACK);
+					
+					if ((livingNeighbours == 2 || livingNeighbours == 3) && btns[i][j].getBackground() == Color.WHITE)
+						newBtns[i][j].setBackground(Color.WHITE);
+					
+					if (livingNeighbours > 3 && btns[i][j].getBackground() == Color.WHITE)
+						newBtns[i][j].setBackground(Color.BLACK);
+					
+					
 						
-						if (livingNeighbours == 2 || livingNeighbours == 3)
-							newBtns[i][j].setBackground(Color.WHITE);
-
-					} else {
-
-						if (livingNeighbours == 3)
-							newBtns[i][j].setBackground(Color.WHITE);
-
-					}
 
 				}
 			}
