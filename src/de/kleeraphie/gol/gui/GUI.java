@@ -2,208 +2,194 @@ package de.kleeraphie.gol.gui;
 
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 
-public class GUI extends JFrame {
-	private static final long serialVersionUID = 8704766206531965016L;
-	private boolean running;
-	private int size;
-	private JButton[][] btns;
-	int zyklus = 0;
+public class GUI {
 
-	public void initialize(int size) {
+	private static JButton[][] field;
+	private int size, cycle;
+	private boolean allCellsDead;
+	private final Color ALIVE = Color.WHITE, DEAD = Color.BLACK;
+	private JFrame window;
+
+	public GUI(int size) {
 		this.size = size;
+		cycle = 0;
+		field = new JButton[this.size][this.size];
 
-		setTitle("Game of Life");
-		setLocationRelativeTo(null);
-		requestFocus();
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(1200, 1200);
-		setContentPane(createPanel());
-
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		setVisible(true);
-	}
-
-	public void start() {
-		running = true;
-//		#1
-		btns[5][5].setBackground(Color.WHITE);
-		btns[5][6].setBackground(Color.WHITE);
-		btns[5][7].setBackground(Color.WHITE);
-		btns[6][5].setBackground(Color.WHITE);
-		btns[7][5].setBackground(Color.WHITE);
-		btns[6][7].setBackground(Color.WHITE);
-		btns[7][7].setBackground(Color.WHITE);
+		createWindow();
+		updateWindow(); // creates field with dead cells
 		
-		btns[11][5].setBackground(Color.WHITE);
-		btns[11][6].setBackground(Color.WHITE);
-		btns[11][7].setBackground(Color.WHITE);
-		btns[10][5].setBackground(Color.WHITE);
-		btns[9][5].setBackground(Color.WHITE);
-		btns[10][7].setBackground(Color.WHITE);
-		btns[9][7].setBackground(Color.WHITE);
+//		Blinker funktioniet
+//		field[1][2].setBackground(ALIVE);
+//		field[2][2].setBackground(ALIVE);
+//		field[3][2].setBackground(ALIVE);
+
+//		1. anderes Objekt funktioniert
+//		field[24][20].setBackground(ALIVE);
+//		field[25][20].setBackground(ALIVE);
+//		field[26][20].setBackground(ALIVE);
+//		field[24][21].setBackground(ALIVE);
+//		field[26][21].setBackground(ALIVE);
+//		field[24][22].setBackground(ALIVE);
+//		field[26][22].setBackground(ALIVE);
+//
+//		field[24][26].setBackground(ALIVE);
+//		field[25][26].setBackground(ALIVE);
+//		field[26][26].setBackground(ALIVE);
+//		field[24][25].setBackground(ALIVE);
+//		field[26][25].setBackground(ALIVE);
+//		field[24][24].setBackground(ALIVE);
+//		field[26][24].setBackground(ALIVE);
+
+//		2 Würfel Blinker
+//		field[5][5].setBackground(ALIVE);
+//		field[5][6].setBackground(ALIVE);
+//		field[6][5].setBackground(ALIVE);
+//		field[6][6].setBackground(ALIVE);
+//		
+//		field[7][7].setBackground(ALIVE);
+//		field[7][8].setBackground(ALIVE);
+//		field[8][7].setBackground(ALIVE);
+//		field[8][8].setBackground(ALIVE);
 		
-//		#2
-//		btns[5][5].setBackground(Color.WHITE);
-//		btns[5][6].setBackground(Color.WHITE);
-//		btns[6][6].setBackground(Color.WHITE);
-//		btns[4][6].setBackground(Color.WHITE);
-//		btns[4][7].setBackground(Color.WHITE);
-		
-		run();
-	}
-
-	public void stop() {
-		running = false;// sets a run boolean to false that is checked after each life cycle
-	}
-
-	private JPanel createPanel() {
-		JPanel result;
-
-		btns = new JButton[size][size];
-
-		result = new JPanel(new GridLayout(size, size));
-		result.setBackground(Color.BLACK);
-
-		for (int i = 0; i < size; i++) {
-			for (int j = 0; j < size; j++) {
-				JButton btn = new JButton();
-				btn.setBackground(Color.BLACK);
-//				btn.setPreferredSize(new Dimension(10, 10));
-				btn.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
-				btn.addMouseListener(mouseListener);
-				btn.addActionListener(new ActionListener() {
-
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						
-						if (btn.getBackground() == Color.BLACK)
-							btn.setBackground(Color.WHITE);
-						else
-							btn.setBackground(Color.BLACK);
-
-					}
-				});
-				btns[i][j] = btn;
-
-				result.add(btn);
-			}
-		}
-
-		return result;
-	}
-
-	private void run() {
-		int livingNeighbours;
-		JButton[][] newBtns = new JButton[size][size];
-
-		while (running) {
-			
-			System.out.println("Zyklus: " + ++zyklus);
-
-			for (int i = 0; i < size; i++)
-				for (int j = 0; j < size; j++)
-					newBtns[i][j] = btns[i][j];
-			
-//			for (int i = 0; i < size; i++) {
-//				for (int j = 0; j < size; j++) {
-//					JButton btn = new JButton();
-//					btn.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
-//					
-//					newBtns[i][j] = btn;
-//				}
-//			}
-
-			for (int i = 0; i < size; i++) {
-				for (int j = 0; j < size; j++) {
-					livingNeighbours = 0;
-					
-					for (int x = i - 1; x <= i + 1; x++) {
-						for (int y = j - 1; y <= j + 1; y++) {
-							
-							try {
-							if (btns[x][y].getBackground() == Color.WHITE)
-								livingNeighbours++;
-							} catch (IndexOutOfBoundsException e) {
-								continue;
-							}
-							
-						}
-					}
-					
-					livingNeighbours--; // because the cell itself was counted too
-					
-					if (livingNeighbours == 3)
-						newBtns[i][j].setBackground(Color.WHITE);
-					
-					if (livingNeighbours < 2)
-						newBtns[i][j].setBackground(Color.BLACK);
-					
-					if ((livingNeighbours == 2 || livingNeighbours == 3) && btns[i][j].getBackground() == Color.WHITE)
-						newBtns[i][j].setBackground(Color.WHITE);
-					
-					if (livingNeighbours > 3 && btns[i][j].getBackground() == Color.WHITE)
-						newBtns[i][j].setBackground(Color.BLACK);
-					
-					
-						
-
-				}
-			}
-
-			btns = newBtns;
-
-		}
-
+//		Glider
+//		field[5][5].setBackground(ALIVE);
+//		field[7][5].setBackground(ALIVE);
+//		field[6][6].setBackground(ALIVE);
+//		field[6][7].setBackground(ALIVE);
+//		field[7][6].setBackground(ALIVE);
 	}
 	
-	MouseListener mouseListener = new MouseAdapter() {
-        public void mousePressed(MouseEvent mouseEvent) {
-            int modifiers = mouseEvent.getModifiers();
-            if ((modifiers & InputEvent.BUTTON1_MASK) == InputEvent.BUTTON1_MASK) {
-                // Mask may not be set properly prior to Java 2
-                // See SwingUtilities.isLeftMouseButton() for workaround
-                System.out.println("Left button pressed.");
-            }
-            if ((modifiers & InputEvent.BUTTON2_MASK) == InputEvent.BUTTON2_MASK) {
-                System.out.println("Middle button pressed.");
-            }
-            if ((modifiers & InputEvent.BUTTON3_MASK) == InputEvent.BUTTON3_MASK) {
-                System.out.println("Right button pressed.");
-//                run();
-            }
-        }
+	public void start() {
+		while (true) {
+			runCycle();
+			if (allCellsDead) {
+				System.out.println(cycle);
+				break; // TODO: doesn't show field, but still calculates it
+			}
+			updateWindow();
 
-        public void mouseReleased(MouseEvent mouseEvent) {
-            if (SwingUtilities.isLeftMouseButton(mouseEvent)) {
-                System.out.println("Left button released.");
-            }
-            if (SwingUtilities.isMiddleMouseButton(mouseEvent)) {
-                System.out.println("Middle button released.");
-            }
-            if (SwingUtilities.isRightMouseButton(mouseEvent)) {
-                System.out.println("Right button released.");
-            }
-            System.out.println();
-        }
-    };
+		}
+	}
+
+	private void createWindow() {
+		window = new JFrame();
+		window.setTitle("Game of Life");
+		window.setLocationRelativeTo(null);
+		window.requestFocus();
+		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		window.setSize(1200, 1200);
+
+		window.setVisible(true);
+	}
+
+	private void runCycle() {
+		int livingNeighbors;
+		JButton[][] newField;
+		JButton cell;
+
+		newField = new JButton[size][size];
+		cycle++;
+		allCellsDead = true;
+
+		for (int x = 0; x < size; x++) {
+			for (int y = 0; y < size; y++) {
+
+				cell = new JButton();
+				cell.setBackground(DEAD);
+
+				newField[x][y] = cell;
+			}
+		}
+
+		for (int x = 0; x < size; x++) {
+			for (int y = 0; y < size; y++) {
+
+				livingNeighbors = 0;
+
+				// count living neighbors
+				for (int i = x - 1; i <= x + 1; i++) {
+					for (int j = y - 1; j <= y + 1; j++) {
+
+						try {
+							if (field[i][j].getBackground() == ALIVE) {
+								livingNeighbors++;
+								allCellsDead = false;
+							}
+
+						} catch (IndexOutOfBoundsException e) {
+							continue;
+						}
+
+					}
+				}
+
+//				if (livingNeighbors > 0) {
+
+				if (field[x][y].getBackground() == ALIVE)
+					livingNeighbors--;
+
+				// check rules
+				if (field[x][y].getBackground() == DEAD && livingNeighbors == 3)
+					newField[x][y].setBackground(ALIVE);
+
+				else if (field[x][y].getBackground() == ALIVE && livingNeighbors < 2)
+					newField[x][y].setBackground(DEAD);
+
+				else if (field[x][y].getBackground() == ALIVE && (livingNeighbors == 2 | livingNeighbors == 3))
+					newField[x][y].setBackground(ALIVE);
+
+				else if (field[x][y].getBackground() == ALIVE && livingNeighbors > 3)
+					newField[x][y].setBackground(DEAD);
+//				} 
+				else
+					newField[x][y].setBackground(DEAD);
+
+			}
+		}
+
+		//check if field has changed; if not allCellsDead remains true so that the program will stop
+		allCellsDead = true;
+		
+		for (int x = 0; x < size; x++) {
+			for (int y = 0; y < size; y++) {
+
+				if (field[x][y].getBackground() != newField[x][y].getBackground())
+					allCellsDead = false;
+			}
+		}
+		
+		field = newField;
+		
+
+	}
+
+	private void updateWindow() {
+		JPanel result;
+		JButton cell;
+
+		result = new JPanel(new GridLayout(size, size));
+
+		for (int x = 0; x < size; x++) {
+			for (int y = 0; y < size; y++) {
+
+				cell = new JButton();
+				if (field[x][y] == null) {
+					cell.setBackground(DEAD);
+					field[x][y] = cell;
+				} else
+					cell.setBackground(field[x][y].getBackground());
+
+				result.add(cell);
+			}
+		}
+		window.setContentPane(result);
+		window.repaint();
+		window.revalidate();
+	}
 
 }
