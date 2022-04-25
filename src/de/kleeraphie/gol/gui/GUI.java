@@ -27,10 +27,8 @@ public class GUI {
 	public void start(int maxCycle) {
 		while (true) {
 			runCycle();
-			if (allCellsDead || cycle == maxCycle) {
-				System.out.println(cycle);
+			if (allCellsDead || cycle == maxCycle)
 				break; // TODO: doesn't show field, but still calculates it
-			}
 			updateWindow();
 
 		}
