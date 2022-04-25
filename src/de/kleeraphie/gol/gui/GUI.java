@@ -9,10 +9,10 @@ import javax.swing.JPanel;
 
 public class GUI {
 
-	private static JButton[][] field;
+	public JButton[][] field;
 	private int size, cycle;
 	private boolean allCellsDead;
-	private final Color ALIVE = Color.WHITE, DEAD = Color.BLACK;
+	public final Color ALIVE = Color.WHITE, DEAD = Color.BLACK;
 	private JFrame window;
 
 	public GUI(int size) {
@@ -22,52 +22,12 @@ public class GUI {
 
 		createWindow();
 		updateWindow(); // creates field with dead cells
-		
-//		Blinker funktioniet
-//		field[1][2].setBackground(ALIVE);
-//		field[2][2].setBackground(ALIVE);
-//		field[3][2].setBackground(ALIVE);
-
-//		1. anderes Objekt funktioniert
-//		field[24][20].setBackground(ALIVE);
-//		field[25][20].setBackground(ALIVE);
-//		field[26][20].setBackground(ALIVE);
-//		field[24][21].setBackground(ALIVE);
-//		field[26][21].setBackground(ALIVE);
-//		field[24][22].setBackground(ALIVE);
-//		field[26][22].setBackground(ALIVE);
-//
-//		field[24][26].setBackground(ALIVE);
-//		field[25][26].setBackground(ALIVE);
-//		field[26][26].setBackground(ALIVE);
-//		field[24][25].setBackground(ALIVE);
-//		field[26][25].setBackground(ALIVE);
-//		field[24][24].setBackground(ALIVE);
-//		field[26][24].setBackground(ALIVE);
-
-//		2 Würfel Blinker
-//		field[5][5].setBackground(ALIVE);
-//		field[5][6].setBackground(ALIVE);
-//		field[6][5].setBackground(ALIVE);
-//		field[6][6].setBackground(ALIVE);
-//		
-//		field[7][7].setBackground(ALIVE);
-//		field[7][8].setBackground(ALIVE);
-//		field[8][7].setBackground(ALIVE);
-//		field[8][8].setBackground(ALIVE);
-		
-//		Glider
-//		field[5][5].setBackground(ALIVE);
-//		field[7][5].setBackground(ALIVE);
-//		field[6][6].setBackground(ALIVE);
-//		field[6][7].setBackground(ALIVE);
-//		field[7][6].setBackground(ALIVE);
 	}
 	
-	public void start() {
+	public void start(int maxCycle) {
 		while (true) {
 			runCycle();
-			if (allCellsDead) {
+			if (allCellsDead || cycle == maxCycle) {
 				System.out.println(cycle);
 				break; // TODO: doesn't show field, but still calculates it
 			}
@@ -190,6 +150,10 @@ public class GUI {
 		window.setContentPane(result);
 		window.repaint();
 		window.revalidate();
+	}
+	
+	public int getCycle() {
+		return cycle;
 	}
 
 }
